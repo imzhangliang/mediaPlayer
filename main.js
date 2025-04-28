@@ -44,12 +44,36 @@ document.addEventListener('keydown', (event) => {
 
 document.querySelector("#customAudioPlayer").addEventListener('click', () => {
     let url = prompt("custom audio player url:");
-    resetAudioPlayerUrl(url);
+    if (url) {
+        resetAudioPlayerUrl(url);
+    }
 });
 
+function getUrlParams(url) {
+    const params = {};
+    const queryString = url.split("?")[1];
+    if (!queryString) return params;
+  
+    const pairs = queryString.split("&");
+  
+    for (let pair of pairs) {
+      if (!pair) continue;
+      const [key, value] = pair.split("=");
+      params[decodeURIComponent(key)] = decodeURIComponent(value || "");
+    }
+  
+    return params;
+}
+
 document.querySelector("#customYoutube").addEventListener('click', () => {
-    let url = prompt("custom youtube url:");
-    resetYoutubeUrl(url);
+    let url = prompt("Enter youtube url:");
+    let vParam = getUrlParams(url).v;
+    if (vParam) {
+        let embedUrl = `https://www.youtube.com/embed/${vParam}`;
+        console.log('embedUrl', embedUrl);
+        resetYoutubeUrl(embedUrl);
+    }
+   
 });
 
 

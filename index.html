@@ -1,17 +1,104 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <style type="text/css">
-        :focus { background-color: #eee; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Dictation</title>
+    <!-- Bootstrap 4 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        body {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .media-box {
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            height: 40rem;
+        }
+        #audioPlayer, #youtubeIframe {
+            border-radius: 10px;
+            height: 28rem;
+        }
+        textarea {
+            resize: none;
+        }
+        .container {
+            max-width: 100%;
+        }
     </style>
 </head>
 <body>
-    <video id="audioPlayer" controls></video><button id="customAudioPlayer">custom url</button>
-    </iframe>
-    <div>
-        <textarea tabindex="0" style="width: 45%; height: 500px"></textarea>
-        <iframe id="youtubeIframe" tabindex="0" width="45%" height="500px" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <button id="customYoutube">custom<br />youtube</button>
+
+    <div class="container container-fluid h-100">
+        <!-- Title Section -->
+        <div class="text-center mb-4">
+            <h1 class="display-4">Media Dictation</h1>
+        </div>
+
+        <div class="row h-100">
+            <!-- Media Box with Dropdown to Choose Audio/YouTube Player -->
+            <div class="col-md-6 mb-3">
+                <div class="media-box">
+                    <h4>Choose Media Player</h4>
+                    <!-- Dropdown to choose media -->
+                    <select id="mediaSelector" class="form-control mb-3">
+                        <option value="youtube">YouTube Player</option>
+                        <option value="audio">Audio Player</option>
+                    </select>
+
+                    <!-- Audio Player Section -->
+                    <div id="audioPlayerContainer" style="display:none;">
+                        <video id="audioPlayer" controls class="w-100 mb-3">
+                            <source src="" type="audio/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <button id="customAudioPlayer" class="btn btn-primary w-100">Custom URL</button>
+                    </div>
+
+                    <!-- YouTube Player Section -->
+                    <div class="" id="youtubePlayerContainer">
+                        <iframe id="youtubeIframe" class="w-100"  src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <button id="customYoutube" class="btn btn-danger w-100 mt-2 ">Custom YouTube</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Area Section -->
+            <div class="col-md-6 mb-3">
+                <textarea tabindex="0" class="form-control h-100"></textarea>
+            </div>
+        </div>
     </div>
+
+    <!-- Bootstrap 4 JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // JavaScript to toggle between audio and YouTube player based on dropdown selection
+        document.getElementById('mediaSelector').addEventListener('change', function() {
+            var selectedValue = this.value;
+
+            if (selectedValue === 'audio') {
+                document.getElementById('audioPlayerContainer').style.display = 'block';
+                document.getElementById('youtubePlayerContainer').style.display = 'none';
+            } else if (selectedValue === 'youtube') {
+                document.getElementById('audioPlayerContainer').style.display = 'none';
+                document.getElementById('youtubePlayerContainer').style.display = 'block';
+            }
+        });
+
+        // Trigger the default selection on page load
+        window.onload = function() {
+            document.getElementById('mediaSelector').dispatchEvent(new Event('change'));
+        };
+    </script>
+    
     <script type="module" src="main.js"></script>
 </body>
 </html>
