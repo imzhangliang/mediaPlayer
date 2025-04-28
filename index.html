@@ -6,6 +6,8 @@
     <title>Media Dictation</title>
     <!-- Bootstrap 4 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <style>
         /* Custom styles */
         body {
@@ -29,9 +31,31 @@
         .container {
             max-width: 100%;
         }
+        /* Countdown Timer Style */
+        #countdownBox {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        #countdown {
+            display: inline-block;
+            width: 5rem;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Countdown Timer Display -->
+    <div id="countdownBox">
+        <button id="startCountdown" class="btn btn-success">
+            <i id="playPauseIcon" class="fas fa-play"></i>
+        </button>
+        <div id="countdown">25:00</div>
+    </div>
 
     <div class="container container-fluid h-100">
         <!-- Title Section -->
@@ -60,9 +84,9 @@
                     </div>
 
                     <!-- YouTube Player Section -->
-                    <div class="" id="youtubePlayerContainer">
-                        <iframe id="youtubeIframe" class="w-100"  src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        <button id="customYoutube" class="btn btn-danger w-100 mt-2 ">Custom YouTube</button>
+                    <div id="youtubePlayerContainer">
+                        <iframe id="youtubeIframe" class="w-100" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <button id="customYoutube" class="btn btn-danger w-100 mt-2">Custom YouTube</button>
                     </div>
                 </div>
             </div>
@@ -97,8 +121,50 @@
         window.onload = function() {
             document.getElementById('mediaSelector').dispatchEvent(new Event('change'));
         };
+
+        // Countdown Timer Logic
+        let countdownTimer;
+        let timeLeft = 25 * 60; // 25 minutes in seconds
+        let isTimerRunning = false;
+
+        // Function to start countdown
+        function startCountdown() {
+            countdownTimer = setInterval(function() {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+
+                document.getElementById('countdown').textContent = minutes + ":" + seconds;
+
+                if (timeLeft === 0) {
+                    clearInterval(countdownTimer);
+                    alert("Time's up! The countdown has finished.");
+                    document.getElementById('playPauseIcon').classList.replace("fa-pause", "fa-play"); // Reset to play icon
+                    isTimerRunning = false;
+                }
+
+                timeLeft--;
+            }, 1000);
+        }
+
+        // Start/Pause Countdown Button Click Event
+        document.getElementById('startCountdown').addEventListener('click', function() {
+            if (isTimerRunning) {
+                // Pause the countdown
+                clearInterval(countdownTimer);
+                document.getElementById('playPauseIcon').classList.replace("fa-pause", "fa-play"); // Change icon to play
+                isTimerRunning = false;
+            } else {
+                // Start the countdown
+                startCountdown();
+                document.getElementById('playPauseIcon').classList.replace("fa-play", "fa-pause"); // Change icon to pause
+                isTimerRunning = true;
+            }
+        });
     </script>
-    
+
     <script type="module" src="main.js"></script>
 </body>
 </html>
