@@ -122,27 +122,37 @@
             document.getElementById('mediaSelector').dispatchEvent(new Event('change'));
         };
 
+        let COUNTDOWN = 25 * 60; // 25 minutes
+
+        setTimeDisplay(COUNTDOWN);
+
         // Countdown Timer Logic
         let countdownTimer;
-        let timeLeft = 25 * 60; // 25 minutes in seconds
+        let timeLeft = COUNTDOWN;
         let isTimerRunning = false;
+
+        function setTimeDisplay(timeLeft) {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+
+            document.getElementById('countdown').textContent = minutes + ":" + seconds;
+        }
 
         // Function to start countdown
         function startCountdown() {
             countdownTimer = setInterval(function() {
-                let minutes = Math.floor(timeLeft / 60);
-                let seconds = timeLeft % 60;
-                if (seconds < 10) {
-                    seconds = "0" + seconds;
-                }
-
-                document.getElementById('countdown').textContent = minutes + ":" + seconds;
+                setTimeDisplay(timeLeft);
 
                 if (timeLeft === 0) {
                     clearInterval(countdownTimer);
                     alert("Time's up! The countdown has finished.");
                     document.getElementById('playPauseIcon').classList.replace("fa-pause", "fa-play"); // Reset to play icon
                     isTimerRunning = false;
+                    timeLeft = COUNTDOWN
+                    setTimeDisplay(timeLeft);
                 }
 
                 timeLeft--;
